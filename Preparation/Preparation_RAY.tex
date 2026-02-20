@@ -26,6 +26,7 @@
 \usepackage{cancel}              % strikeout in math
 \usepackage{siunitx}             % proper units
 \DeclareSIUnit\angstrom{\text{Å}}
+\DeclareSIUnit\meter{\metre}
 \renewcommand{\arraystretch}{0.9}
 
 % --- Graphics and floats ---
@@ -121,7 +122,7 @@ The aim is to determine the molecular scattering coefficient $\beta(\lambda)$ of
 
 A key experimental challenge is that the Rayleigh loss over ordinary laboratory distances is extremely small.
 This makes simple transmission measurements impractical, because the signal change would be comparable to typical fluctuations and systematic effects.
-The experiment therefore uses an optical arrangement that realizes very large effective path lengths within a compact setup, so that the weak scattering loss becomes measurable in a robust way.
+The experiment therefore uses an optical arrangement that realizes very large effective path lengths within a compact setup, so that the weak scattering loss becomes measurable in a robust way~\cite{RAYAnleitung}.
 
 % --------------
 % --- Theory ---
@@ -133,11 +134,11 @@ The experiment therefore uses an optical arrangement that realizes very large ef
 
 Whether light scattering is described as Rayleigh or Mie scattering is mainly determined by how large the scatterers are compared to the wavelength.
 This comparison is captured by the size parameter $x$, defined as
-\begin{equation}
+\[
 x=\frac{2\pi a}{\lambda},
-\label{eq:size_parameter}
-\end{equation}
-where $a$ is the particle radius and $\lambda$ is the optical wavelength.
+\]
+
+where $a$ is the particle radius and $\lambda$ is the optical wavelength~\cite{RAYAnleitung}.
 For $x\ll 1$ the Rayleigh regime applies, which is the relevant case for molecular scattering in gases.
 For $x\sim 1$ the scattering enters the Mie regime, which is typical for aerosols and droplets, and for $x\gg 1$ the behavior approaches geometric optics.
 
@@ -148,24 +149,24 @@ The beam still loses intensity, because intensity measures how much power remain
 This is the same mechanism that makes the sky appear blue: shorter wavelengths are scattered more efficiently and are therefore redistributed more strongly into the atmosphere, while the directly transmitted sunlight becomes slightly depleted in blue, shifting its apparent color toward yellow.
 
 Quantitatively, the scattered power of a single scatterer is proportional to the incident intensity, and the proportionality constant is the scattering cross section $\sigma(\lambda)$.
-In a gas containing many scatterers, it is convenient to use the scattering coefficient $\beta(\lambda)$ (unit $\unit{m^{-1}}$), defined by
+In a gas containing many scatterers, it is convenient to use the scattering coefficient $\beta(\lambda)$ (unit $\si{m^{-1}}$), defined by
 \begin{equation}
 \beta(\lambda)=N\,\sigma(\lambda),
 \label{eq:beta_def}
 \end{equation}
-where $N$ is the number concentration of scatterers.
+
+where $N$ is the number concentration of scatterers~\cite{RAYAnleitung}.
 Physically, $\beta(\lambda)$ is the scattering loss per unit length from a narrow, forward-propagating beam, so $\beta(\lambda)\,dz$ is the fraction of beam power that is scattered out of the beam within a small path element $dz$.
 
 If the gas is homogeneous and multiple scattering can be neglected, the intensity decrease of a collimated beam can be modeled by
-\begin{equation}
+\[
 \frac{dI}{dz}=-\beta(\lambda)\,I,
-\label{eq:beer_lambert_beta}
-\end{equation}
+\]
 which has the solution
-\begin{equation}
+\[
 I(z)=I_0\,e^{-\beta(\lambda)\,z}.
-\label{eq:beer_lambert_solution}
-\end{equation}
+\]
+
 This exponential behavior makes the meaning of $\beta(\lambda)$ particularly transparent: it sets the characteristic length scale $1/\beta(\lambda)$ over which the transmitted intensity would drop significantly.
 
 Rayleigh scattering is characterized by a strong wavelength dependence, with the scattering strength increasing rapidly toward shorter wavelengths.
@@ -174,7 +175,8 @@ For molecular Rayleigh scattering, the scattering coefficient can be expressed i
 \beta(\lambda)=\frac{8\pi^{3}}{3N\lambda^{4}}\left(n^{2}-1\right)^{2}.
 \label{eq:beta_rayleigh}
 \end{equation}
-The characteristic $\lambda^{-4}$ scaling is the key result: for a fixed gas composition and density, changing the wavelength has a much stronger effect on $\beta$ than most other parameters.
+
+The characteristic $\lambda^{-4}$ scaling is the key result: for a fixed gas composition and density, changing the wavelength has a much stronger effect on $\beta$ than most other parameters~\cite{RAYAnleitung}.
 
 For the experiment, the goal is to determine the molecular scattering coefficient $\beta(\lambda)$ of air and to compare it with the theoretical value from Eq.~\eqref{eq:beta_rayleigh}.
 Since typical molecular scattering coefficients in gases are extremely small, the corresponding intensity reduction over ordinary laboratory distances is tiny.
@@ -183,7 +185,54 @@ This makes a direct transmission measurement impractical and motivates the use o
 \subsection{Cavity Ring-Down Spectroscopy}
 \label{sec:theory_crds}
 
-xxx
+Cavity ring-down spectroscopy (CRDS) is a time-domain method for measuring extremely small optical losses by storing light in a high-finesse optical cavity and observing its decay.
+The cavity consists of two highly reflective mirrors that support a stable optical mode, so that injected light performs many round trips and the effective propagation distance becomes very large compared to the physical cavity length.
+Instead of measuring an absolute transmission, CRDS measures a decay constant.
+
+In a typical CRDS measurement, the cavity is excited by a short laser pulse that is turned off rapidly compared to the subsequent decay.
+After the excitation ends, light remains trapped in the cavity mode and a small fraction is transmitted through one of the mirrors during each round trip.
+This transmitted fraction is detected as a function of time, and the measured signal follows an exponential decay.
+\begin{equation}
+I(t)=I_0\,e^{-t/\tau},
+\label{eq:crds_decay}
+\end{equation}
+
+where $I_0$ is the intensity at the beginning of the decay and $\tau$ is the ring-down time~\cite{RAYAnleitung}.
+The ring-down time is the characteristic time scale on which the intracavity intensity drops by a factor $e$, so it quantifies the total fractional loss per unit time experienced by the stored light.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{../resources/figures/crds_principle.png}
+  \caption{Principle of a CRDS measurement.
+  A short laser pulse is injected into a two-mirror cavity with reflectivity $R>99.98\%$ and the transmitted intensity decays exponentially as $I(t)=I_0 e^{-t/\tau}$~\cite{RAYAnleitung}.}
+  \label{fig:crds_principle}
+\end{figure}
+
+To connect $\tau$ with cavity losses, consider first an evacuated cavity where losses inside the cavity volume are negligible.
+In that case the dominant loss is the finite mirror reflectivity, so the intensity is reduced by approximately the same fraction during each round trip.
+For mirror reflectivity $R(\lambda)\approx 0.9998$, one obtains the standard relation
+
+\begin{equation}
+\tau_0(\lambda)=\frac{L}{c\left(1-R(\lambda)\right)},
+\label{eq:tau0_reflectivity}
+\end{equation}
+
+where $L$ is the cavity length and $c$ is the speed of light~\cite{RAYAnleitung}.
+The quantity $\tau_0$ therefore represents the baseline storage time of the cavity and depends on mirror losses as well as on any additional parasitic losses that effectively reduce the cavity finesse.
+
+If a gas is present in the cavity, photons can be removed from the cavity mode by scattering and absorption inside the cavity volume.
+Such loss processes can be described by an extinction coefficient per unit length, which for this experiment is dominated by the scattering coefficient $\beta(\lambda)$ introduced in Eq.~\eqref{eq:beta_def}.
+The additional loss shortens the ring-down time from $\tau_0$ to a smaller value $\tau$.
+A particularly useful feature of CRDS is that the mirror contribution can be eliminated by comparing measurements with and without the additional loss mechanism.
+One finds
+
+\begin{equation}
+\beta(\lambda)=\frac{1}{c}\left(\frac{1}{\tau(\lambda)}-\frac{1}{\tau_0(\lambda)}\right).
+\label{eq:beta_from_taus}
+\end{equation}
+
+Equation~\eqref{eq:beta_from_taus} is the central working equation of the experiment, because it allows the weak molecular scattering loss to be extracted from a difference of decay rates without requiring knowledge of the absolute mirror reflectivity~\cite{RAYAnleitung}.
+The role of CRDS in this experiment is therefore to realize an effectively very long optical path length and to transform the tiny Rayleigh loss into a measurable change of the ring-down time.
 
 % --------------------------
 % --- Experimental Setup ---
@@ -191,14 +240,51 @@ xxx
 \section{Experimental Setup}
 \label{sec:exp_setup}
 
-xxx
+A schematic overview of the CRDS measurement setup is shown in Fig.~\ref{fig:crds_setup}.
+The experiment combines a pulsed laser source, a high-finesse optical cavity, a time-resolved detection chain, and a vacuum and gas-handling system to alternate between an evacuated reference measurement and an air-filled measurement.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\linewidth]{../resources/figures/crds_setup.png}
+  \caption{CRDS measurement setup as used in the experiment.
+  The pulsed laser injects light into the optical cavity, the transmitted leakage light is detected with a photomultiplier (PM) after an optical filter and recorded on a digital oscilloscope, and the cavity can be evacuated or filled with filtered ambient air using valves, a vacuum pump, and a syringe filter~\cite{RAYAnleitung}.}
+  \label{fig:crds_setup}
+\end{figure}
+
+The optical cavity consists of two highly reflective spherical mirrors arranged as a stable resonator with a fixed mirror separation L=\SI{50}{cm} and mirror radius of curvature r=\SI{100}{cm}.
+The mirrors have a reflectivity of $R>99.98\%$, so only a very small fraction of the intracavity light is transmitted through the mirror coatings during each round trip.
+A short laser pulse from the pulsed laser diode head (PicoQuant LDH-D-C-405, wavelength \SI{405}{nm}, pulse power up to \SI{100}{mW}, repetition rate up to \SI{100}{Hz}) is coupled into the cavity through the input mirror, and after the excitation ends the remaining intracavity light decays due to the total losses of the resonator~\cite{RAYAnleitung}.
+
+For the adjustment of the optical axis and cavity alignment, an additional continuous-wave green laser (wavelength \SI{532}{nm}) is used.
+Since this wavelength lies outside the high-reflectivity range of the cavity mirrors, the green beam is transmitted well and provides a clearly visible aid for coarse alignment before optimizing the ring-down signal at \SI{405}{nm}~\cite{RAYAnleitung}.
+
+The light transmitted through the output mirror forms a well-defined beam that is measured with a photomultiplier (Hamamatsu H7826) placed behind the cavity.
+An optical band-pass filter is positioned in front of the detector to suppress background light and improve the signal-to-noise ratio at the laser wavelength.
+The detector output is recorded on a digital oscilloscope (Rohde \& Schwarz HMO1522), which is triggered by the delay generator (Stanford DG545) that also controls the laser pulse timing, ensuring a reproducible time reference for each ring-down trace.
+The recorded decay curves are then used to extract the ring-down times $\tau_0$ and $\tau$ by fitting Eq.~\eqref{eq:crds_decay}.
+Data can be stored on the oscilloscope and transferred to a PC via a GPIB interface for further analysis~\cite{RAYAnleitung}.
+
+To separate mirror losses from molecular scattering losses, the cavity can be operated under two different gas conditions.
+First, the cavity is evacuated using a vacuum pump while the pressure is monitored by a manometer, yielding the reference ring-down time $\tau_0$ that is dominated by mirror and alignment losses.
+Second, the cavity is filled with ambient air at atmospheric pressure to obtain $\tau$, where the additional loss is dominated by Rayleigh scattering in the gas volume.
+To reduce unwanted contributions from aerosols, incoming air is passed through a syringe filter with pore diameter \SI{2}{\micro\meter} before entering the cavity, so that the measured additional loss can be attributed as closely as possible to molecular scattering~\cite{RAYAnleitung}.
 
 % -----------------
 % --- Procedure ---
 % -----------------
 \section{Procedure}
 
-xxx
+The cavity is first evacuated using the vacuum pump while monitoring the pressure with the manometer, and pumping is stopped once the minimal readable pressure is reached~\cite{RAYAnleitung}.
+
+For alignment, the \SI{532}{nm} laser is used for coarse adjustment and the pulsed \SI{405}{nm} laser is then used to optimize the alignment by maximizing the observed ring-down time, corresponding to minimal parasitic losses~\cite{RAYAnleitung}.
+
+In the evacuated state, ring-down traces are recorded on the oscilloscope and fitted with the exponential decay law of Eq.~\eqref{eq:crds_decay} to obtain the reference ring-down time $\tau_0$~\cite{RAYAnleitung}.
+
+Next, the cavity is filled with filtered ambient air at atmospheric pressure.
+Since pumping and refilling can slightly change the mirror positions, the alignment is checked and readjusted if necessary, again aiming to maximize the ring-down time.
+Ring-down traces are then recorded and fitted to obtain the ring-down time $\tau$ for air-filled conditions~\cite{RAYAnleitung}.
+
+Finally, the molecular scattering coefficient is calculated from $\tau_0$ and $\tau$ using Eq.~\eqref{eq:beta_from_taus} and compared with the theoretical Rayleigh value from Eq.~\eqref{eq:beta_rayleigh}~\cite{RAYAnleitung}.
 
 % ------------------
 % --- References ---
