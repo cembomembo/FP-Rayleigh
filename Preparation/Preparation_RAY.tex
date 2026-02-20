@@ -111,13 +111,77 @@
 \newpage
 \setcounter{page}{1}
 \section{Introduction}
+\label{sec:introduction}
 
-xxx
+Rayleigh scattering is the elastic scattering of light by particles that are much smaller than the wavelength.
+In everyday life it is most famously responsible for the blue appearance of the sky, since short-wavelength light is scattered more efficiently than long-wavelength light.
+
+In this experiment, Rayleigh scattering is studied quantitatively in air as a very small but well-defined optical loss process.
+The aim is to determine the molecular scattering coefficient $\beta(\lambda)$ of air at a fixed wavelength and to compare the result with the theoretical expectation.
+
+A key experimental challenge is that the Rayleigh loss over ordinary laboratory distances is extremely small.
+This makes simple transmission measurements impractical, because the signal change would be comparable to typical fluctuations and systematic effects.
+The experiment therefore uses an optical arrangement that realizes very large effective path lengths within a compact setup, so that the weak scattering loss becomes measurable in a robust way.
 
 % --------------
 % --- Theory ---
 % --------------
 \section{Theory}
+
+\subsection{Rayleigh Scattering}
+\label{sec:theory_rayleigh}
+
+Whether light scattering is described as Rayleigh or Mie scattering is mainly determined by how large the scatterers are compared to the wavelength.
+This comparison is captured by the size parameter $x$, defined as
+\begin{equation}
+x=\frac{2\pi a}{\lambda},
+\label{eq:size_parameter}
+\end{equation}
+where $a$ is the particle radius and $\lambda$ is the optical wavelength.
+For $x\ll 1$ the Rayleigh regime applies, which is the relevant case for molecular scattering in gases.
+For $x\sim 1$ the scattering enters the Mie regime, which is typical for aerosols and droplets, and for $x\gg 1$ the behavior approaches geometric optics.
+
+In the Rayleigh regime, the incident light field makes the electrons in a molecule oscillate, so the molecule behaves like a tiny driven dipole that reemits light.
+A simple and intuitive picture is to think of the light beam as many photons traveling forward, where occasionally a photon is scattered by a molecule and then continues in a different direction.
+The photon energy stays essentially the same in Rayleigh scattering, so the wavelength does not change.
+The beam still loses intensity, because intensity measures how much power remains in the original forward direction, and every scattering event redirects a small fraction of that power into other directions.
+This is the same mechanism that makes the sky appear blue: shorter wavelengths are scattered more efficiently and are therefore redistributed more strongly into the atmosphere, while the directly transmitted sunlight becomes slightly depleted in blue, shifting its apparent color toward yellow.
+
+Quantitatively, the scattered power of a single scatterer is proportional to the incident intensity, and the proportionality constant is the scattering cross section $\sigma(\lambda)$.
+In a gas containing many scatterers, it is convenient to use the scattering coefficient $\beta(\lambda)$ (unit $\unit{m^{-1}}$), defined by
+\begin{equation}
+\beta(\lambda)=N\,\sigma(\lambda),
+\label{eq:beta_def}
+\end{equation}
+where $N$ is the number concentration of scatterers.
+Physically, $\beta(\lambda)$ is the scattering loss per unit length from a narrow, forward-propagating beam, so $\beta(\lambda)\,dz$ is the fraction of beam power that is scattered out of the beam within a small path element $dz$.
+
+If the gas is homogeneous and multiple scattering can be neglected, the intensity decrease of a collimated beam can be modeled by
+\begin{equation}
+\frac{dI}{dz}=-\beta(\lambda)\,I,
+\label{eq:beer_lambert_beta}
+\end{equation}
+which has the solution
+\begin{equation}
+I(z)=I_0\,e^{-\beta(\lambda)\,z}.
+\label{eq:beer_lambert_solution}
+\end{equation}
+This exponential behavior makes the meaning of $\beta(\lambda)$ particularly transparent: it sets the characteristic length scale $1/\beta(\lambda)$ over which the transmitted intensity would drop significantly.
+
+Rayleigh scattering is characterized by a strong wavelength dependence, with the scattering strength increasing rapidly toward shorter wavelengths.
+For molecular Rayleigh scattering, the scattering coefficient can be expressed in terms of the refractive index $n$ of the gas as
+\begin{equation}
+\beta(\lambda)=\frac{8\pi^{3}}{3N\lambda^{4}}\left(n^{2}-1\right)^{2}.
+\label{eq:beta_rayleigh}
+\end{equation}
+The characteristic $\lambda^{-4}$ scaling is the key result: for a fixed gas composition and density, changing the wavelength has a much stronger effect on $\beta$ than most other parameters.
+
+For the experiment, the goal is to determine the molecular scattering coefficient $\beta(\lambda)$ of air and to compare it with the theoretical value from Eq.~\eqref{eq:beta_rayleigh}.
+Since typical molecular scattering coefficients in gases are extremely small, the corresponding intensity reduction over ordinary laboratory distances is tiny.
+This makes a direct transmission measurement impractical and motivates the use of an optical method that realizes very large effective path lengths within a compact setup.
+
+\subsection{Cavity Ring-Down Spectroscopy}
+\label{sec:theory_crds}
 
 xxx
 
