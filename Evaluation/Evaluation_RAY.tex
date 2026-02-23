@@ -242,10 +242,12 @@ The role of CRDS in this experiment is therefore to realize an effectively very 
 
 A schematic overview of the CRDS measurement setup is shown in Fig.~\ref{fig:crds_setup}.
 The experiment combines a pulsed laser source, a high-finesse optical cavity, a time-resolved detection chain, and a vacuum and gas-handling system to alternate between an evacuated reference measurement and an air-filled measurement.
+All optical components are mounted on an optical rail that is screwed onto a standard wooden laboratory table (i.e.\ no vibration-isolated optical table is used).
 
+\vspace{1em}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.85\linewidth]{../resources/figures/crds_setup.png}
+  \includegraphics[width=0.95\linewidth]{../resources/figures/crds_setup.png}
   \caption{CRDS measurement setup as used in the experiment.
   The pulsed laser injects light into the optical cavity, the transmitted leakage light is detected with a photomultiplier (PM) after an optical filter and recorded on a digital oscilloscope, and the cavity can be evacuated or filled with filtered ambient air using valves, a vacuum pump, and a syringe filter~\cite{RAYAnleitung}.}
   \label{fig:crds_setup}
@@ -254,6 +256,8 @@ The experiment combines a pulsed laser source, a high-finesse optical cavity, a 
 The optical cavity consists of two highly reflective spherical mirrors arranged as a stable resonator with a fixed mirror separation L=\SI{50}{cm} and mirror radius of curvature r=\SI{100}{cm}.
 The mirrors have a reflectivity of $R>99.98\%$, so only a very small fraction of the intracavity light is transmitted through the mirror coatings during each round trip.
 A short laser pulse from the pulsed laser diode head (PicoQuant LDH-D-C-405, wavelength \SI{405}{nm}, pulse power up to \SI{100}{mW}, repetition rate up to \SI{100}{Hz}) is coupled into the cavity through the input mirror, and after the excitation ends the remaining intracavity light decays due to the total losses of the resonator~\cite{RAYAnleitung}.
+Between the laser diode head and the cavity entrance, two pinhole apertures are positioned along the beam path over a distance of roughly \SI{50}{cm}.
+These apertures define the nominal optical axis and serve as a practical alignment aid: the laser beam is adjusted to pass centrally through both pinholes before entering the cavity, which helps to ensure near-collinear injection and reduces angular misalignment during the subsequent cavity optimization.
 
 For the adjustment of the optical axis and cavity alignment, an additional continuous-wave green laser (wavelength \SI{532}{nm}) is used.
 Since this wavelength lies outside the high-reflectivity range of the cavity mirrors, the green beam is transmitted well and provides a clearly visible aid for coarse alignment before optimizing the ring-down signal at \SI{405}{nm}~\cite{RAYAnleitung}.
@@ -264,42 +268,67 @@ The detector output is recorded on a digital oscilloscope (Rohde \& Schwarz HMO1
 The recorded decay curves are then used to extract the ring-down times $\tau_0$ and $\tau$ by fitting Eq.~\eqref{eq:crds_decay}.
 Data can be stored on the oscilloscope and transferred to a PC via a GPIB interface for further analysis~\cite{RAYAnleitung}.
 
-To separate mirror losses from molecular scattering losses, the cavity can be operated under two different gas conditions.
+To separate mirror losses from molecular scattering losses, the cavity is operated under two different gas conditions.
 First, the cavity is evacuated using a vacuum pump while the pressure is monitored by a manometer, yielding the reference ring-down time $\tau_0$ that is dominated by mirror and alignment losses.
+The manometer measures the pressure difference between the cavity and the ambient atmosphere, so a reading of \SI{0}{mbar} corresponds to air at atmospheric pressure, while evacuation leads to negative readings.
 Second, the cavity is filled with ambient air at atmospheric pressure to obtain $\tau$, where the additional loss is dominated by Rayleigh scattering in the gas volume.
-To reduce unwanted contributions from aerosols, incoming air is passed through a syringe filter with pore diameter \SI{2}{\micro\meter} before entering the cavity, so that the measured additional loss can be attributed as closely as possible to molecular scattering~\cite{RAYAnleitung}.
-
-%%%%%%%%
-
-Laser mount adjustable via two screws, height and position perpendicular to optical axis. The angle wrt the optical axis is adjusted by rotating the laser by hand.
-
-The cavity, or better said the mirrors, are adjustable via four screws, two per mirror. One vertical, one horizontal, that is, the angle wrt to the plane perpendicular to the optical axis.
-
-Green laser is non adjustable, continuous, not pulsed, easily visible with bare eyes.
-
-PMT detector is connected to a power supply which has one knob to adjust its sensitivity, the other cable goes to the oscilloscope that reads the detector signal.
-
-
-
-%%%%%%%%
+To reduce unwanted contributions from aerosols, incoming air is passed through a syringe filter with pore diameter \SI{2}{\micro\meter} before entering the cavity, so that the measured additional loss is attributed as closely as possible to molecular scattering~\cite{RAYAnleitung}.
 
 % -----------------
 % --- Procedure ---
 % -----------------
 \section{Procedure}
+\label{sec:procedure}
 
-xxx
+The measurement consists of an alignment phase and a data acquisition phase.
+Alignment is performed first with the continuous-wave green laser at \SI{532}{nm} and is then refined with the pulsed laser at \SI{405}{nm} while monitoring the ring-down signal on the oscilloscope.
 
-starting with 532 nm alignment laser and alignment completely screwed up.
-first we try adjusting the laser position so it goes straight along the optical axis through the first two pinholes, keeping them mostly closed to see where the laser point lands, with the goal of hitting the third pinhole (entry of cavity) perfectly in the middle.
-then next we adjust the four screws of the mirrors (one vertical and one horizontal per mirror) until the green laser exits through the other end of the cavity.
-we hold a piece of paper towards the exit hole to make sure it exits right in the center, so it hits the PMT detector centrally.
-since the mirrors almost completely allow transmission of the green light we can see the laser exiting, as opposed to the blue laser (loses most of its intensity upon entering the cavity), so thats why we use the green laser, to adjust the alignment of the mirrors.
+\subsection{Alignment}
 
-next we exchange the green alignment laser with blue laser. now since the mirrors are theoretically well aligned, all we need to do is adjust the laser position so that it goes through the first two pinholes and hits the third pinhole centrally. this is hard as the blue laser is not very intense but its possible to roughly adjust so that it hits the cavity entry pinhole.
+\paragraph{Coarse alignment with the green laser:}
+At the beginning, the cavity alignment is typically not optimized and the transmitted beam does not reliably pass through the cavity.
+The green alignment laser is switched on because the cavity mirrors transmit \SI{532}{nm} light well, so the beam path through the cavity is directly visible.
 
-then we screw the detector on the exit end of the cavity and turn on its power supply. then next we adjust the four mirror screws while looking at the intensity on the oscilloscope.
+First, the green beam is adjusted to propagate straight along the nominal optical axis defined by the pinholes.
+The laser head position is tuned so that the beam passes centrally through the first two pinholes, which are kept nearly closed to make the beam spot position clearly visible.
+In addition, backreflections from the pinholes and from the laser diode head are used as an alignment check: the alignment is considered good when the reflected spot lands on or very near the point where the beam exits the diode.
+The goal is that the beam also hits the third pinhole (the cavity entrance) centrally.
 
+Next, the cavity mirrors are aligned using the four adjustment screws.
+The mirror tilts are varied until the green beam exits the cavity at the downstream end.
+A sheet of paper is held in front of the cavity exit to observe the transmitted spot and to ensure that the exiting beam is centered so that it later hits the photomultiplier input centrally.
+
+\paragraph{Switch to the blue laser and pre-alignment:}
+After the coarse alignment is achieved, the green laser is replaced by the pulsed \SI{405}{nm} laser diode.
+The laser output power is set to a moderate value of about \SI{40}{mW} to obtain a stable signal while avoiding excessive heating of the diode head.
+The pulse length is set to \SI{100}{\micro\second} and the repetition frequency to \SI{5}{Hz}, so that the cavity is excited by well-separated pulses and each ring-down event can be recorded without overlap.
+The \SI{405}{nm} beam position is then adjusted so that it passes through the first two pinholes and hits the cavity entrance pinhole as centrally as possible.
+This step is more difficult than with the green laser because the \SI{405}{nm} beam spot is less visible to the eye, so the pinholes are again kept nearly closed and backreflections are used as an additional indicator of a well-centered beam.
+
+Although the mirror alignment from the green laser provides a good starting point, it remains a coarse alignment.
+Therefore, small additional adjustments of the mirror screws are typically still required after switching to \SI{405}{nm}, even if the blue beam is well centered on the cavity entrance.
+
+\paragraph{Signal optimization on the oscilloscope:}
+The photomultiplier detector is mounted at the cavity output and connected to its power supply and to the oscilloscope input.
+The delay generator is used to trigger the oscilloscope and the laser pulse timing so that the ring-down trace is displayed reproducibly.
+
+To find and maximize the ring-down signal, the mirror screws are adjusted while continuously observing the oscilloscope trace.
+The detector gain is kept as low as possible to avoid saturation and is only increased when no signal above the noise floor is visible.
+Once a ring-down trace emerges from the noise, each of the four mirror screws is adjusted sequentially to maximize the observed signal amplitude and to obtain a clean exponential decay with minimal noise.
+After one optimization cycle over all four screws, the detector gain is reduced again (if possible) and the optimization cycle is repeated to further improve signal quality.
+
+\subsection{Data acquisition}
+Data acquisition starts from an aligned cavity under vacuum.
+The LabVIEW program is started to record the oscilloscope trace and save it as a \texttt{.csv} file containing two columns (time in seconds and detector voltage in volts).
+The oscilloscope time axis is set such that the relevant decay segment starts at $t=0$, while negative times correspond to the pre-trigger region.
+
+Each recorded trace is opened in the provided fitting software to obtain an immediate estimate of the ring-down time $\tau$ from an exponential fit.
+This quick fit is used as an consistency check to ensure that the measured values are plausible and that the vacuum ring-down time satisfies $\tau_0>\tau$ once air is introduced.
+For every measurement, the estimated ring-down time, the positions of the four mirror adjustment screws, and the ambient temperature and air pressure are documented.
+
+After the vacuum measurement, filtered ambient air is admitted to the cavity and the alignment is re-optimized until a stable exponential decay is recovered.
+A second trace is then recorded under air at atmospheric pressure.
+This vacuum--air measurement pair is repeated five times, yielding a total of ten recorded ring-down traces (five values of $\tau_0$ and five values of $\tau$).
 
 % ------------------
 % --- Evaluation ---
