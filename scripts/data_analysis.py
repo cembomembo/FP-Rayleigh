@@ -1,6 +1,3 @@
-import os
-from matplotlib.pylab import yscale
-from matplotlib.pyplot import xscale
 import numpy as np
 import matplotlib.pyplot as plt
 
