@@ -3,9 +3,9 @@ requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "fp-faraday"
+name = "fp-rayleigh"
 version = "0.1.0"
-description = "Analysis of spectra from isolator crystal experiment"
+description = "Ba15 - Rayleigh Scattering"
 authors = [
     {name = "Javier Bellido", email = "javier.bellido@example.com"}
 ]

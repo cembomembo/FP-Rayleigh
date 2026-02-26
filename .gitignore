@@ -1,5 +1,5 @@
 **/build/
 **/.
 */.venv
-**/fp_faraday.egg-info
+**/fp_rayleigh.egg-info
 .gitignore
