@@ -16,6 +16,7 @@
 \titlespacing*{\section}{0pt}{5.0ex plus 1ex minus .2ex}{1.0ex plus .2ex}
 \titlespacing*{\subsection}{0pt}{3.0ex plus .5ex minus .2ex}{0.8ex plus .2ex}
 \titlespacing*{\subsubsection}{0pt}{2.0ex plus .5ex minus .2ex}{0.8ex plus .2ex}
+\usepackage{booktabs}
 
 % --- Math and symbols ---
 \usepackage{amsmath, amssymb}    % standard math
@@ -334,6 +335,169 @@ This vacuum--air measurement pair is repeated five times, yielding a total of te
 % --- Evaluation ---
 % ------------------
 \section{Evaluation}
+\label{sec:evaluation}
+
+\subsection{Overview of the recorded data}
+\label{sec:evaluation_overview}
+
+The ring-down curves were recorded as ten \texttt{.csv} files, each containing two columns (time in seconds and photomultiplier voltage in volts).
+Five measurements were taken with the cavity evacuated (\texttt{1\_vac.csv} to \texttt{5\_vac.csv}) and five with the cavity filled with filtered ambient air (\texttt{1\_air.csv} to \texttt{5\_air.csv}), so that each index $i\in\{1,\dots,5\}$ forms one vacuum--air pair.
+All subsequent analysis steps were applied identically to each pair.
+To illustrate the analysis procedure without overcrowding the report with nearly identical figures, one representative pair (here: \texttt{2\_vac} and \texttt{2\_air}) is shown in detail, while the numerical results for all pairs are presented later in the evaluation.
+
+The recorded photomultiplier signal has an inverted polarity (negative voltage for positive optical intensity) due to the detector and amplifier chain.
+For clearer interpretation and for the later logarithmic representation, the voltage traces were multiplied by $-1$, so that larger optical intensity corresponds to larger plotted voltage.
+
+\subsection{Qualitative inspection of the ring-down traces}
+\label{sec:evaluation_raw_traces}
+
+Figure~\ref{fig:raw_pair_overlay} shows the raw traces of a vacuum--air pair after polarity correction.
+At early times, the signal rises quickly and then remains at an approximately constant level for about \SI{100}{\micro\second}.
+This plateau corresponds to the time interval during which the laser pulse injects light into the cavity and the intracavity intensity is sustained by the continuous input.
+At $t\approx\SI{100}{\micro\second}$ the laser pulse ends, the cavity is no longer pumped, and the stored light decays due to cavity losses.
+The subsequent decay is the ring-down signal of interest, from which the ring-down time constants $\tau_0$ (vacuum) and $\tau$ (air) will be extracted by fitting an exponential model as described in Sec.~\ref{sec:theory_crds}.
+As expected, the decay in air is slightly faster than in vacuum, indicating an additional loss mechanism in the air-filled cavity that is attributed to molecular scattering.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\linewidth]{../resources/figures/raw_overlay_2_vac_2_air.png}
+  \caption{Overlay of a representative vacuum--air measurement pair (\texttt{2\_vac} and \texttt{2\_air}) after polarity correction.
+  The plateau up to about \SI{100}{\micro\second} corresponds to the laser pulse duration.
+  After the pulse ends, the transmitted intensity decays as the cavity empties, with a slightly faster decay for air due to additional intracavity losses.}
+  \label{fig:raw_pair_overlay}
+\end{figure}
+
+\subsection{Selection of the fit window using a semilogarithmic plot}
+\label{sec:evaluation_fit_window}
+
+To extract $\tau$ reliably, the exponential decay must be fitted only in a time interval where a single-exponential behavior dominates and where the signal remains sufficiently above the noise floor.
+A convenient diagnostic is a semilogarithmic representation: if the decay follows $V(t)\propto e^{-t/\tau}$, then $\ln V(t)$ should be approximately linear in time.
+Figure~\ref{fig:semilog_exploratory} shows an exploratory semilog plot of the same vacuum--air pair for times beyond \SI{90}{\micro\second}.
+A clear near-linear region is observed shortly after the end of the laser pulse, while at later times the scatter increases strongly and the semilog representation becomes dominated by noise.
+
+Based on the exploratory semilog plots for all five measurement pairs, a common fit window was chosen as $t\in[\SI{102}{\micro\second},\,\SI{125}{\micro\second}]$.
+The start time $t_\text{start}=\SI{102}{\micro\second}$ is chosen slightly after the nominal pulse end at \SI{100}{\micro\second} to avoid possible turn-off transients of the laser driver and detector response.
+The end time $t_\text{end}=\SI{125}{\micro\second}$ is chosen conservatively to remain within the region that is still approximately linear on a semilog scale, before the signal approaches the noise floor.
+This interval is comparatively short, which reduces the number of points contributing to the slope determination, but it avoids bias from noise-dominated late-time data and was found to be stable across all recorded traces.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\linewidth]{../resources/figures/semilog_exploratory_2_vac_2_air.png}
+  \caption{Exploratory semilog plot of the raw signal for the representative pair (\texttt{2\_vac} and \texttt{2\_air}).
+  Shortly after the end of the laser pulse, the decay appears approximately linear in the semilogarithmic representation, consistent with a single-exponential ring-down.
+  At later times the scatter increases strongly as the signal approaches the noise floor, motivating a restricted fit window.}
+  \label{fig:semilog_exploratory}
+\end{figure}
+
+\subsection{Determination of the ring-down times by linear regression}
+\label{sec:evaluation_fit_tau}
+
+Within the selected fit window, the ring-down signal is modeled as a single exponential decay.
+To account for the small baseline offset of the detector signal, a constant offset $C$ is estimated for each trace as the mean voltage in a late-time region where the ring-down has fully decayed and the signal is dominated by noise.
+In practice, times $t\gtrsim\SI{160}{\micro\second}$ were found to be noise-dominated for all measurements, and this interval was therefore used consistently to compute $C$.
+The baseline-corrected signal is then defined as $y(t)=V(t)-C$, where $V(t)$ denotes the recorded (polarity-corrected) photomultiplier voltage.
+Assuming a single-exponential ring-down, one expects
+\[
+y(t)=A\,e^{-t/\tau}.
+\]
+Taking the natural logarithm yields the linear relation
+\[
+\ln y(t)=\ln A-\frac{t}{\tau}=a+b\,t,
+\]
+with intercept $a=\ln A$ and slope $b=-1/\tau$.
+Thus, the desired ring-down time is obtained directly from the fitted slope as $\tau=-1/b$.
+
+For each trace, the data points in the fit window $t\in[\SI{102}{\micro\second},\,\SI{125}{\micro\second}]$ were transformed to $(t,\ln y)$ and fitted with an ordinary least-squares (OLS) straight-line model.
+The uncertainty of the slope $b$ was obtained from the covariance matrix returned by the OLS fit.
+By error propagation, the corresponding uncertainty of the ring-down time is $\Delta\tau=\Delta b/b^{2}$.
+Figure~\ref{fig:linreg_example} illustrates the linear regression for the representative pair \texttt{2\_vac} and \texttt{2\_air}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1.0\linewidth]{../resources/figures/linreg_fit_2_vac_2_air.png}
+  \caption{Linear regression of $\ln\!\bigl(y(t)\bigr)=\ln\!\bigl(V(t)-C\bigr)$ in the fit window $t\in[\SI{102}{\micro\second},\,\SI{125}{\micro\second}]$ for the representative pair \texttt{2\_vac} and \texttt{2\_air}.
+  The fitted slopes $b$ (with uncertainties) correspond to the ring-down times via $\tau=-1/b$, and the steeper slope for air reflects the additional intracavity loss compared to vacuum.}
+  \label{fig:linreg_example}
+\end{figure}
+
+The same analysis was applied to all ten traces, yielding five vacuum ring-down times $\tau_{0,i}$ and five air-filled ring-down times $\tau_i$.
+The results are summarized in Table~\ref{tab:taus_all}.
+
+\vspace{1em}
+\begin{table}[H]
+\centering
+\caption{Ring-down times obtained from linear regression in the fit window $t\in[\SI{102}{\micro\second},\,\SI{125}{\micro\second}]$.
+Vacuum measurements yield $\tau_{0,i}$ and air-filled measurements yield $\tau_i$, where $i=1,\dots,5$ denotes the measurement pair index.}
+\label{tab:taus_all}
+\begin{tabular}{c c c}
+\toprule
+Pair $i$ & $\tau_{0,i}$ (\si{\micro\second}) & $\tau_{i}$ (\si{\micro\second}) \\
+\midrule
+1 & $7.13 \pm 0.05$ & $6.57 \pm 0.05$ \\
+2 & $9.90 \pm 0.04$ & $7.55 \pm 0.05$ \\
+3 & $10.21 \pm 0.05$ & $8.40 \pm 0.05$ \\
+4 & $9.19 \pm 0.05$ & $6.16 \pm 0.05$ \\
+5 & $8.96 \pm 0.05$ & $8.91 \pm 0.05$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:taus_all} shows that $\tau_{0,i}>\tau_i$ for all five pairs, as expected when additional intracavity losses are present in air.
+However, the magnitude of the difference $\tau_{0,i}-\tau_i$ varies noticeably between pairs and is particularly small for pair~5.
+Since the scattering coefficient is obtained from the difference of inverse ring-down times (Eq.~\eqref{eq:beta_from_taus}), such variations can have a strong impact on the extracted $\beta$ values.
+
+\subsection{Experimental scattering coefficient}
+\label{sec:evaluation_beta_exp}
+
+From the measured ring-down times, the molecular scattering coefficient is obtained using Eq.~\eqref{eq:beta_from_taus}.
+For each vacuum--air measurement pair $i=1,\dots,5$, we compute
+\[
+\beta_i(\lambda)=\frac{1}{c}\left(\frac{1}{\tau_i}-\frac{1}{\tau_{0,i}}\right).
+\]
+The corresponding uncertainty is obtained by Gaussian error propagation, treating $\tau_{0,i}$ and $\tau_i$ as independent:
+\[
+\Delta\beta_i=\frac{1}{c}\sqrt{\left(\frac{\Delta\tau_i}{\tau_i^{2}}\right)^{2}+\left(\frac{\Delta\tau_{0,i}}{\tau_{0,i}^{2}}\right)^{2}}.
+\]
+
+The resulting values $\beta_i$ are summarized in Table~\ref{tab:beta_all}.
+
+\vspace{1em}
+\begin{table}[H]
+\centering
+\caption{Experimental scattering coefficients obtained from the five vacuum--air measurement pairs using Eq.~\eqref{eq:beta_from_taus}.}
+\label{tab:beta_all}
+\begin{tabular}{c c}
+\toprule
+Pair $i$ & $\beta_i$ (\si{m^{-1}}) \\
+\midrule
+1 & $(4.011 \pm 0.468)\times 10^{-5}$ \\
+2 & $(10.458 \pm 0.317)\times 10^{-5}$ \\
+3 & $(7.060 \pm 0.264)\times 10^{-5}$ \\
+4 & $(17.826 \pm 0.442)\times 10^{-5}$ \\
+5 & $(0.194 \pm 0.288)\times 10^{-5}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The values in Table~\ref{tab:beta_all} show a substantial spread between measurement pairs.
+In particular, pair~5 yields a value consistent with zero within its uncertainty, which follows directly from the fact that $\tau_{0,5}$ and $\tau_{5}$ are nearly identical (Table~\ref{tab:taus_all}).
+This highlights that the extracted scattering coefficient is highly sensitive to small differences between the vacuum and air ring-down times.
+
+As a final experimental result, we report the mean scattering coefficient
+\[
+\overline{\beta}=\frac{1}{5}\sum_{i=1}^{5}\beta_i=(7.910\pm 3.002)\times 10^{-5}\,\si{m^{-1}}.
+\]
+The uncertainty of $\overline{\beta}$ is taken as the standard error of the mean (SEM).
+First, the scatter of the five individual values $\beta_i$ is quantified by the sample standard deviation $s_{\beta}$, which measures how strongly the $\beta_i$ vary from one measurement pair to the next.
+If the five pairs are viewed as independent repeats of the same measurement, then averaging reduces purely statistical fluctuations.
+The expected uncertainty of the mean value therefore decreases with the number of repeats and is given by
+\[
+\Delta\overline{\beta}=\mathrm{SEM}=\frac{s_{\beta}}{\sqrt{5}}.
+\]
+
+As a simple robustness check, we also evaluated the mean value excluding pair~5, because its $\beta_5$ value is consistent with zero within uncertainty.
+This yields $\overline{\beta}_{(1\text{--}4)}=(9.839\pm 2.970)\times 10^{-5}\,\si{m^{-1}}$, i.e.\ an even larger deviation from the expected theoretical order of magnitude.
+We therefore retain all five pairs in the final result and interpret the large run-to-run scatter as the dominant limitation of the measurement.
 
 xxx
 
