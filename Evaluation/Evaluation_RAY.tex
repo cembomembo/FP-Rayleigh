@@ -213,10 +213,9 @@ To connect $\tau$ with cavity losses, consider first an evacuated cavity where l
 In that case the dominant loss is the finite mirror reflectivity, so the intensity is reduced by approximately the same fraction during each round trip.
 For mirror reflectivity $R(\lambda)\approx 0.9998$, one obtains the standard relation
 
-\begin{equation}
+\[
 \tau_0(\lambda)=\frac{L}{c\left(1-R(\lambda)\right)},
-\label{eq:tau0_reflectivity}
-\end{equation}
+\]
 
 where $L$ is the cavity length and $c$ is the speed of light~\cite{RAYAnleitung}.
 The quantity $\tau_0$ therefore represents the baseline storage time of the cavity and depends on mirror losses as well as on any additional parasitic losses that effectively reduce the cavity finesse.
@@ -263,7 +262,7 @@ These apertures define the nominal optical axis and serve as a practical alignme
 For the adjustment of the optical axis and cavity alignment, an additional continuous-wave green laser (wavelength \SI{532}{nm}) is used.
 Since this wavelength lies outside the high-reflectivity range of the cavity mirrors, the green beam is transmitted well and provides a clearly visible aid for coarse alignment before optimizing the ring-down signal at \SI{405}{nm}~\cite{RAYAnleitung}.
 
-The light transmitted through the output mirror forms a well-defined beam that is measured with a photomultiplier (Hamamatsu H7826) placed behind the cavity.
+The light transmitted through the output mirror forms a beam that is measured with a photomultiplier (Hamamatsu H7826) placed behind the cavity.
 An optical band-pass filter is positioned in front of the detector to suppress background light and improve the signal-to-noise ratio at the laser wavelength.
 The detector output is recorded on a digital oscilloscope (Rohde \& Schwarz HMO1522), which is triggered by the delay generator (Stanford DG545) that also controls the laser pulse timing, ensuring a reproducible time reference for each ring-down trace.
 The recorded decay curves are then used to extract the ring-down times $\tau_0$ and $\tau$ by fitting Eq.~\eqref{eq:crds_decay}.
@@ -274,6 +273,7 @@ First, the cavity is evacuated using a vacuum pump while the pressure is monitor
 The manometer measures the pressure difference between the cavity and the ambient atmosphere, so a reading of \SI{0}{mbar} corresponds to air at atmospheric pressure, while evacuation leads to negative readings.
 Second, the cavity is filled with ambient air at atmospheric pressure to obtain $\tau$, where the additional loss is dominated by Rayleigh scattering in the gas volume.
 To reduce unwanted contributions from aerosols, incoming air is passed through a syringe filter with pore diameter \SI{2}{\micro\meter} before entering the cavity, so that the measured additional loss is attributed as closely as possible to molecular scattering~\cite{RAYAnleitung}.
+Ambient pressure is measured with a precision barometer (Greisinger GPB 3300) and the ambient temperature is read from an analog glass thermometer (model not specified).
 
 % -----------------
 % --- Procedure ---
@@ -320,8 +320,8 @@ After one optimization cycle over all four screws, the detector gain is reduced 
 
 \subsection{Data acquisition}
 Data acquisition starts from an aligned cavity under vacuum.
-The LabVIEW program is started to record the oscilloscope trace and save it as a \texttt{.csv} file containing two columns (time in seconds and detector voltage in volts).
-The oscilloscope time axis is set such that the relevant decay segment starts at $t=0$, while negative times correspond to the pre-trigger region.
+The LabVIEW program is started to record the oscilloscope trace and save it as a \texttt{.csv} file.
+The oscilloscope time axis is set such that the laser pulse onset defines $t=0$, while negative times correspond to the pre-trigger region.
 
 Each recorded trace is opened in the provided fitting software to obtain an immediate estimate of the ring-down time $\tau$ from an exponential fit.
 This quick fit is used as an consistency check to ensure that the measured values are plausible and that the vacuum ring-down time satisfies $\tau_0>\tau$ once air is introduced.
@@ -351,13 +351,6 @@ For clearer interpretation and for the later logarithmic representation, the vol
 \subsection{Qualitative inspection of the ring-down traces}
 \label{sec:evaluation_raw_traces}
 
-Figure~\ref{fig:raw_pair_overlay} shows the raw traces of a vacuum--air pair after polarity correction.
-At early times, the signal rises quickly and then remains at an approximately constant level for about \SI{100}{\micro\second}.
-This plateau corresponds to the time interval during which the laser pulse injects light into the cavity and the intracavity intensity is sustained by the continuous input.
-At $t\approx\SI{100}{\micro\second}$ the laser pulse ends, the cavity is no longer pumped, and the stored light decays due to cavity losses.
-The subsequent decay is the ring-down signal of interest, from which the ring-down time constants $\tau_0$ (vacuum) and $\tau$ (air) will be extracted by fitting an exponential model as described in Sec.~\ref{sec:theory_crds}.
-As expected, the decay in air is slightly faster than in vacuum, indicating an additional loss mechanism in the air-filled cavity that is attributed to molecular scattering.
-
 \begin{figure}[H]
   \centering
   \includegraphics[width=1.0\linewidth]{../resources/figures/raw_overlay_2_vac_2_air.png}
@@ -366,6 +359,14 @@ As expected, the decay in air is slightly faster than in vacuum, indicating an a
   After the pulse ends, the transmitted intensity decays as the cavity empties, with a slightly faster decay for air due to additional intracavity losses.}
   \label{fig:raw_pair_overlay}
 \end{figure}
+
+Figure~\ref{fig:raw_pair_overlay} shows the raw traces of a vacuum--air pair after polarity correction.
+At early times, the signal rises quickly and then remains at an approximately constant level for about \SI{100}{\micro\second}.
+This plateau corresponds to the time interval during which the laser pulse injects light into the cavity and the intracavity intensity is sustained by the continuous input.
+
+At $t\approx\SI{100}{\micro\second}$ the laser pulse ends, the cavity is no longer pumped, and the stored light decays due to cavity losses.
+The subsequent decay is the ring-down signal of interest, from which the ring-down time constants $\tau_0$ (vacuum) and $\tau$ (air) will be extracted by fitting an exponential model as described in Sec.~\ref{sec:theory_crds}.
+As expected, the decay in air is slightly faster than in vacuum, indicating an additional loss mechanism in the air-filled cavity that is attributed to molecular scattering.
 
 \subsection{Selection of the fit window using a semilogarithmic plot}
 \label{sec:evaluation_fit_window}
@@ -380,6 +381,7 @@ The start time $t_\text{start}=\SI{102}{\micro\second}$ is chosen slightly after
 The end time $t_\text{end}=\SI{125}{\micro\second}$ is chosen conservatively to remain within the region that is still approximately linear on a semilog scale, before the signal approaches the noise floor.
 This interval is comparatively short, which reduces the number of points contributing to the slope determination, but it avoids bias from noise-dominated late-time data and was found to be stable across all recorded traces.
 
+\vspace{1em}
 \begin{figure}[H]
   \centering
   \includegraphics[width=1.0\linewidth]{../resources/figures/semilog_exploratory_2_vac_2_air.png}
@@ -407,11 +409,13 @@ Taking the natural logarithm yields the linear relation
 with intercept $a=\ln A$ and slope $b=-1/\tau$.
 Thus, the desired ring-down time is obtained directly from the fitted slope as $\tau=-1/b$.
 
-For each trace, the data points in the fit window $t\in[\SI{102}{\micro\second},\,\SI{125}{\micro\second}]$ were transformed to $(t,\ln y)$ and fitted with an ordinary least-squares (OLS) straight-line model.
-The uncertainty of the slope $b$ was obtained from the covariance matrix returned by the OLS fit.
+For each trace, the data points in the fit window $t\in[\SI{102}{\micro\second},\,\SI{125}{\micro\second}]$ were fitted with an ordinary least-squares (OLS) straight-line model.
+Since no pointwise measurement uncertainties for the oscilloscope time axis and the photomultiplier voltage are available from the acquisition, the parameter uncertainties were estimated from the scatter of the data around the fitted line.
+Concretely, the uncertainty of the slope $b$ was obtained from the covariance matrix returned by the OLS fit.
 By error propagation, the corresponding uncertainty of the ring-down time is $\Delta\tau=\Delta b/b^{2}$.
 Figure~\ref{fig:linreg_example} illustrates the linear regression for the representative pair \texttt{2\_vac} and \texttt{2\_air}.
 
+\vspace{1em}
 \begin{figure}[H]
   \centering
   \includegraphics[width=1.0\linewidth]{../resources/figures/linreg_fit_2_vac_2_air.png}
@@ -449,7 +453,7 @@ Since the scattering coefficient is obtained from the difference of inverse ring
 \subsection{Experimental scattering coefficient}
 \label{sec:evaluation_beta_exp}
 
-From the measured ring-down times, the molecular scattering coefficient is obtained using Eq.~\eqref{eq:beta_from_taus}.
+From the measured ring-down times, the molecular scattering coefficient is obtained using Eq.~\eqref{eq:beta_from_taus}, with $c=\SI{2.99792458e8}{m/s}$ denoting the speed of light in vacuum.
 For each vacuum--air measurement pair $i=1,\dots,5$, we compute
 \[
 \beta_i(\lambda)=\frac{1}{c}\left(\frac{1}{\tau_i}-\frac{1}{\tau_{0,i}}\right).
@@ -479,14 +483,16 @@ Pair $i$ & $\beta_i$ (\si{m^{-1}}) \\
 \end{tabular}
 \end{table}
 
+\newpage
 The values in Table~\ref{tab:beta_all} show a substantial spread between measurement pairs.
 In particular, pair~5 yields a value consistent with zero within its uncertainty, which follows directly from the fact that $\tau_{0,5}$ and $\tau_{5}$ are nearly identical (Table~\ref{tab:taus_all}).
 This highlights that the extracted scattering coefficient is highly sensitive to small differences between the vacuum and air ring-down times.
 
 As a final experimental result, we report the mean scattering coefficient
-\[
-\overline{\beta}=\frac{1}{5}\sum_{i=1}^{5}\beta_i=(7.910\pm 3.002)\times 10^{-5}\,\si{m^{-1}}.
-\]
+\begin{equation}
+\overline{\beta} = \frac{1}{5}\sum_{i=1}^{5}\beta_i = \boxed{\beta_{exp} = (7.910\pm 3.002)\times 10^{-5}\,\si{m^{-1}}} \, .
+\label{eq:beta_exp}
+\end{equation}
 The uncertainty of $\overline{\beta}$ is taken as the standard error of the mean (SEM).
 First, the scatter of the five individual values $\beta_i$ is quantified by the sample standard deviation $s_{\beta}$, which measures how strongly the $\beta_i$ vary from one measurement pair to the next.
 If the five pairs are viewed as independent repeats of the same measurement, then averaging reduces purely statistical fluctuations.
@@ -499,7 +505,70 @@ As a simple robustness check, we also evaluated the mean value excluding pair~5,
 This yields $\overline{\beta}_{(1\text{--}4)}=(9.839\pm 2.970)\times 10^{-5}\,\si{m^{-1}}$, i.e.\ an even larger deviation from the expected theoretical order of magnitude.
 We therefore retain all five pairs in the final result and interpret the large run-to-run scatter as the dominant limitation of the measurement.
 
-xxx
+\subsection{Theoretical scattering coefficient}
+\label{sec:evaluation_beta_theory}
+
+To compare the experimental result with the theoretical Rayleigh prediction from Eq.~\eqref{eq:beta_rayleigh}, we evaluate $\beta(\lambda)$ under the ambient conditions during the measurements.
+The ambient temperature and pressure were recorded once per vacuum--air pair and are listed in Table~\ref{tab:temp_pressure}.
+Since the variations between pairs are small compared to the experimental scatter of $\beta_i$, the theoretical calculation is performed using the mean values $\overline{T}$ and $\overline{p}$.
+
+\vspace{1em}
+\begin{table}[H]
+\centering
+\caption{Ambient temperature and pressure recorded during the five vacuum--air measurement pairs.}
+\label{tab:temp_pressure}
+\begin{tabular}{c c c}
+\toprule
+Pair $i$ & $T_i$ (\si{\celsius}) & $p_i$ (\si{mbar}) \\
+\midrule
+1 & 19.8 & 1020.2 \\
+2 & 20.0 & 1017.4 \\
+3 & 20.2 & 1015.2 \\
+4 & 20.1 & 1018.0 \\
+5 & 20.3 & 1019.7 \\
+\midrule
+Mean & 20.08 & 1018.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the theoretical calculation we use
+\[
+\overline{T}=\SI{20.08}{\celsius}=\SI{293.23}{K},\qquad \overline{p}=\SI{1018.10}{mbar}=\SI{1.01810e5}{Pa}.
+\]
+The temperature was read from an analog glass thermometer with \SI{0.1}{\celsius} tick marks, so we take $\Delta T=\SI{0.1}{\celsius}$ as a reading uncertainty.
+For the pressure, the manufacturer specifies an accuracy of $\Delta p=\SI{2.0}{mbar}$ (typ.\ at \SIrange{0}{50}{\celsius}), while the display digit of \SI{0.1}{mbar} is negligible on this scale~\cite{GPB3300Manual}.
+
+The number density of air molecules is obtained from the ideal gas law in the form
+\[
+N=\frac{p}{k_B T},
+\]
+so that no explicit knowledge of the gas volume is required.
+Here $k_B=\SI{1.380649e-23}{J/K}$ is the Boltzmann constant.
+With Gaussian error propagation, the uncertainty of $N$ is
+\[
+\Delta N=\sqrt{\left(\frac{\partial N}{\partial p}\Delta p\right)^2+\left(\frac{\partial N}{\partial T}\Delta T\right)^2}
+=\sqrt{\left(\frac{\Delta p}{k_B T}\right)^2+\left(\frac{p\,\Delta T}{k_B T^{2}}\right)^2}.
+\]
+Using $\overline{p}$ and $\overline{T}$ yields
+\[
+N=(2.5148\pm 0.0050)\times 10^{25}\,\si{m^{-3}}.
+\]
+
+For the Rayleigh calculation we take the laser wavelength as $\lambda=\SI{405}{nm}$ (manufacturer value, uncertainty not specified and therefore neglected).
+The refractive index is taken from the literature table for standard air at \SI{0.400}{\micro\meter}, yielding $n=1.00028275$ (used as an approximation for \SI{405}{nm})~\cite{Miles2001}.
+Inserting these values into Eq.~\eqref{eq:beta_rayleigh} gives
+\begin{equation}
+\boxed{\beta_\mathrm{th}=(3.909\pm 0.008)\times 10^{-5}\,\si{m^{-1}}} \, .
+\label{eq:beta_th}
+\end{equation}
+Since $\beta_\mathrm{th}\propto 1/N$ for fixed $n$ and $\lambda$, the uncertainty is propagated as
+\[
+\frac{\Delta\beta_\mathrm{th}}{\beta_\mathrm{th}}=\frac{\Delta N}{N},
+\qquad\Rightarrow\qquad
+\Delta\beta_\mathrm{th}=\beta_\mathrm{th}\,\frac{\Delta N}{N}.
+\]
+The resulting $\Delta\beta_\mathrm{th}$ is very small compared to the experimental uncertainty of $\overline{\beta}$, so the theoretical uncertainty is negligible for the subsequent comparison.
 
 % ------------------
 % --- Discussion ---
