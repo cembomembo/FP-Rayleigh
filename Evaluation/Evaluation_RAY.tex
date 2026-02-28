@@ -521,20 +521,20 @@ Since the variations between pairs are small compared to the experimental scatte
 \toprule
 Pair $i$ & $T_i$ (\si{\celsius}) & $p_i$ (\si{mbar}) \\
 \midrule
-1 & 19.8 & 1020.2 \\
-2 & 20.0 & 1017.4 \\
-3 & 20.2 & 1015.2 \\
-4 & 20.1 & 1018.0 \\
-5 & 20.3 & 1019.7 \\
+1 & 19.7 & 1003.2 \\
+2 & 20.1 & 1003.4 \\
+3 & 20.2 & 1003.5 \\
+4 & 20.4 & 1003.8 \\
+5 & 20.4 & 1003.7 \\
 \midrule
-Mean & 20.08 & 1018.10 \\
+Mean & 20.16 & 1003.52 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 For the theoretical calculation we use
 \[
-\overline{T}=\SI{20.08}{\celsius}=\SI{293.23}{K},\qquad \overline{p}=\SI{1018.10}{mbar}=\SI{1.01810e5}{Pa}.
+\overline{T}=\SI{20.16}{\celsius}=\SI{293.31}{K},\qquad \overline{p}=\SI{1003.52}{mbar}=\SI{1.00352e5}{Pa}.
 \]
 The temperature was read from an analog glass thermometer with \SI{0.1}{\celsius} tick marks, so we take $\Delta T=\SI{0.1}{\celsius}$ as a reading uncertainty.
 For the pressure, the manufacturer specifies an accuracy of $\Delta p=\SI{2.0}{mbar}$ (typ.\ at \SIrange{0}{50}{\celsius}), while the display digit of \SI{0.1}{mbar} is negligible on this scale~\cite{GPB3300Manual}.
@@ -552,14 +552,14 @@ With Gaussian error propagation, the uncertainty of $N$ is
 \]
 Using $\overline{p}$ and $\overline{T}$ yields
 \[
-N=(2.5148\pm 0.0050)\times 10^{25}\,\si{m^{-3}}.
+N=(2.4781\pm 0.0050)\times 10^{25}\,\si{m^{-3}}.
 \]
 
 For the Rayleigh calculation we take the laser wavelength as $\lambda=\SI{405}{nm}$ (manufacturer value, uncertainty not specified and therefore neglected).
 The refractive index is taken from the literature table for standard air at \SI{0.400}{\micro\meter}, yielding $n=1.00028275$ (used as an approximation for \SI{405}{nm})~\cite{Miles2001}.
 Inserting these values into Eq.~\eqref{eq:beta_rayleigh} gives
 \begin{equation}
-\boxed{\beta_\mathrm{th}=(3.909\pm 0.008)\times 10^{-5}\,\si{m^{-1}}} \, .
+\boxed{\beta_\mathrm{th}=(3.967\pm 0.008)\times 10^{-5}\,\si{m^{-1}}} \, .
 \label{eq:beta_th}
 \end{equation}
 Since $\beta_\mathrm{th}\propto 1/N$ for fixed $n$ and $\lambda$, the uncertainty is propagated as
@@ -574,15 +574,45 @@ The resulting $\Delta\beta_\mathrm{th}$ is very small compared to the experiment
 % --- Discussion ---
 % ------------------
 \section{Discussion}
+\label{sec:discussion}
 
-xxx
+The experimental result $\beta_\mathrm{exp}=(8\pm 3)\times 10^{-5}\,\si{m^{-1}}$ is larger than the theoretical prediction $\beta_\mathrm{th}=(3.967\pm 0.008)\times 10^{-5}\,\si{m^{-1}}$, and the dominant feature of the dataset is the large run-to-run scatter of the five pairwise values $\beta_i$ in Table~\ref{tab:beta_all}.
+This scatter is much larger than the propagated uncertainties of individual fits, indicating that the overall measurement is not limited by the statistical precision of the linear regression but by systematic variations between measurement pairs.
+
+A key point is that $\beta$ is extracted from a difference of decay rates, $\beta=\Delta(1/\tau)/c$.
+As a consequence, small changes in the measured ring-down times $\tau$ and $\tau_0$ can lead to comparatively large changes in the inferred scattering coefficient.
+A sensitivity analysis in the evaluation illustrates this directly: for a typical pair, changing the air-filled ring-down time by only \SI{0.5}{\micro\second} changes $\beta$ by about $3.1\times 10^{-5}\,\si{m^{-1}}$, i.e.\ by an amount comparable to the expected Rayleigh signal itself.
+This explains why the pairwise values $\beta_i$ can differ strongly even though each individual ring-down time is determined with an uncertainty of only about \SI{0.05}{\micro\second}.
+
+The most plausible origin of such pair-to-pair variations is that the optical alignment of the cavity is not reproduced perfectly after refilling and re-optimizing.
+Even small changes in the mirror angles can change how the light circulates inside the cavity and where it hits the mirror surfaces.
+In some alignments the circulating beam remains well confined and losses are minimal, while in others a slightly larger fraction of light can be lost per round trip, for example by increased scattering on imperfect mirror regions or by small geometric losses (``clipping'') at edges or mounts.
+Since the ring-down time $\tau$ is directly determined by these very small loss fractions, such alignment-dependent changes can noticeably shift $\tau$ and therefore strongly affect the extracted $\beta$.
+The wooden laboratory table and the absence of a vibration-isolated optical table likely further increase sensitivity to small mechanical drifts, which can move the optimal alignment point on the time scale of repeated measurements.
+
+In addition to alignment-related effects, residual scattering by remaining aerosols could provide a second possible contribution.
+Although the incoming air is passed through a \SI{2}{\micro\meter} syringe filter, it cannot be ruled out that a small amount of particulate matter still enters the cavity.
+Such particles would cause additional (non-molecular) light loss via scattering in the Mie regime, which would shorten the air-filled ring-down time and thus bias $\beta$ upward.
+Whether this contribution changes significantly from one measurement to the next is difficult to judge from our data alone, but it is a plausible mechanism that could increase the measured loss in air compared to the pure Rayleigh expectation.
+
+By contrast, uncertainties in the ambient pressure and temperature measurements have only a negligible effect on the theoretical prediction.
+The propagated uncertainty of $\beta_\mathrm{th}$ from $\Delta p$ and $\Delta T$ is of order $10^{-7}\,\si{m^{-1}}$, which is far smaller than the experimental uncertainty of $\overline{\beta}$.
+Similarly, the regression uncertainties of individual ring-down times are small compared to the observed scatter of the five $\beta_i$ values.
+Therefore, improving the agreement between experiment and theory would primarily require improving the reproducibility of cavity conditions between vacuum and air measurements, for example by minimizing alignment changes between the two states, increasing mechanical stability, and reducing the influence of residual aerosols.
 
 % ------------------
 % --- Conclusion ---
 % ------------------
 \section{Conclusion}
+\label{sec:conclusion}
 
-xxx
+In this experiment, Rayleigh scattering in air was studied as a weak but well-defined optical loss mechanism using cavity ring-down spectroscopy at $\lambda=\SI{405}{nm}$.
+From five vacuum--air measurement pairs, the molecular scattering coefficient was determined to be $\beta_\mathrm{exp}=(8\pm 3)\times 10^{-5}\,\si{m^{-1}}$.
+Using the recorded ambient pressure and temperature together with the Rayleigh prediction from Eq.~\eqref{eq:beta_rayleigh}, the theoretical expectation was found to be $\beta_\mathrm{th}=(3.967\pm 0.008)\times 10^{-5}\,\si{m^{-1}}$.
+
+The analysis shows that the dominant limitation of the measurement is not the statistical uncertainty of the exponential fits, but the reproducibility of the cavity conditions between repeated measurements.
+Since $\beta$ is obtained from a small difference of decay rates, small systematic changes in alignment between vacuum and air measurements can produce comparatively large variations in the extracted $\beta_i$ values and therefore dominate the overall uncertainty.
+Further improvements would primarily require increased mechanical stability and a measurement procedure that minimizes alignment changes between the two cavity states, while keeping additional extinction contributions in air (e.g.\ due to residual aerosols) as small as possible.
 
 % ----------------
 % --- Appendix ---
@@ -611,6 +641,6 @@ All research, scientific analysis, data evaluation, and interpretation were carr
 % --- Lab Report ---
 % ------------------
 \newpage
-% \includepdf[pages=-, scale=0.9, pagecommand={\thispagestyle{empty}}]{../resources/FAR_LabReport.pdf}
+\includepdf[pages=-, scale=0.9, pagecommand={\thispagestyle{empty}}]{../resources/RAY_LabReport.pdf}
 
 \end{document}
