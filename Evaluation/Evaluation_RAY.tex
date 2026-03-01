@@ -9,6 +9,7 @@
 \setlength{\parindent}{0pt}      % paragraph indentation
 \setlength{\parskip}{0.8em}      % space between paragraphs
 \setstretch{1.2}                 % line spacing
+\emergencystretch=2em            % reduce overfull \hbox warnings
 \usepackage{tocloft}             % section spacing in ToC
 \setlength{\cftbeforesecskip}{10pt}
 \setlength{\cftbeforesubsecskip}{4pt}
@@ -143,11 +144,11 @@ For $x\ll 1$ the Mie theory reduces to the Rayleigh regime, which is the relevan
 In contrast, micrometer-sized particles such as water droplets are not in the molecular Rayleigh limit and instead scatter light in the Mie regime~\cite{RAYAnleitung}.
 This is why clouds, which consist of many water droplets, appear white rather than blue.
 
-In the Rayleigh regime, the incident light field makes the electrons in a molecule oscillate, so the molecule behaves like a tiny driven dipole that reemits light.
+In the Rayleigh regime, the incident light field makes the electrons in a molecule oscillate, so the molecule behaves like a tiny driven dipole that reemits light~\cite{RAYAnleitung, Miles2001}.
 A simple and intuitive picture is to think of the light beam as many photons traveling forward, where occasionally a photon is scattered by a molecule and then continues in a different direction.
 The photon energy stays essentially the same in Rayleigh scattering, so the wavelength does not change.
 The beam still loses intensity, because intensity measures how much power remains in the original forward direction, and every scattering event redirects a small fraction of that power into other directions.
-This is the same mechanism that makes the sky appear blue: shorter wavelengths are scattered more efficiently and are therefore redistributed more strongly into the atmosphere, while the directly transmitted sunlight becomes slightly depleted in blue, shifting its apparent color toward yellow.
+This is the same mechanism that makes the sky appear blue: shorter wavelengths are scattered more efficiently and are therefore redistributed more strongly into the atmosphere, while the directly transmitted sunlight becomes slightly depleted in blue, shifting its apparent color toward yellow~\cite{RAYAnleitung}.
 
 Quantitatively, the scattered power of a single scatterer is proportional to the incident intensity, and the proportionality constant is the scattering cross section $\sigma(\lambda)$.
 In a gas containing many scatterers, it is convenient to use the scattering coefficient $\beta(\lambda)$ (unit $\si{m^{-1}}$), defined by
@@ -157,18 +158,13 @@ In a gas containing many scatterers, it is convenient to use the scattering coef
 \end{equation}
 
 where $N$ is the number concentration of scatterers~\cite{RAYAnleitung}.
-Physically, $\beta(\lambda)$ is the scattering loss per unit length from a narrow, forward-propagating beam, so $\beta(\lambda)\,dz$ is the fraction of beam power that is scattered out of the beam within a small path element $dz$.
-
-If the gas is homogeneous and multiple scattering can be neglected, the intensity decrease of a collimated beam can be modeled by
+The scattering coefficient $\beta(\lambda)$ has the unit of an inverse length and quantifies how strongly a beam is attenuated by Rayleigh scattering per unit distance.
+For a homogeneous gas, the transmitted intensity follows the Beer--Lambert law,
 \[
-\frac{dI}{dz}=-\beta(\lambda)\,I,
+I(z)=I_0\,e^{-\beta(\lambda)\,z},
 \]
-which has the solution
-\[
-I(z)=I_0\,e^{-\beta(\lambda)\,z}.
-\]
-
-This exponential behavior makes the meaning of $\beta(\lambda)$ particularly transparent: it sets the characteristic length scale $1/\beta(\lambda)$ over which the transmitted intensity would drop significantly.
+where $I_0$ is the intensity at $z=0$.
+For short path lengths with $\beta(\lambda)\,z\ll 1$, the exponential can be approximated as $I(z)\approx I_0\left(1-\beta(\lambda)\,z\right)$, which shows that $\beta(\lambda)$ is the fractional loss of forward intensity per unit length.
 
 Rayleigh scattering is characterized by a strong wavelength dependence, with the scattering strength increasing rapidly toward shorter wavelengths.
 For molecular Rayleigh scattering, the scattering coefficient can be expressed in terms of the refractive index $n$ of the gas as
@@ -181,24 +177,25 @@ The characteristic $\lambda^{-4}$ scaling is the key result: for a fixed gas com
 
 For the experiment, the goal is to determine the molecular scattering coefficient $\beta(\lambda)$ of air and to compare it with the theoretical value from Eq.~\eqref{eq:beta_rayleigh}.
 Since typical molecular scattering coefficients in gases are extremely small, the corresponding intensity reduction over ordinary laboratory distances is tiny.
-This makes a direct transmission measurement impractical and motivates the use of an optical method that realizes very large effective path lengths within a compact setup.
+This makes a direct transmission measurement impractical and motivates the use of an optical method that realizes very large effective path lengths within a compact setup~\cite{RAYAnleitung}.
 
 \subsection{Cavity Ring-Down Spectroscopy}
 \label{sec:theory_crds}
 
 Cavity ring-down spectroscopy (CRDS) is a time-domain method for measuring extremely small optical losses by storing light in a high-finesse optical cavity and observing its decay.
 The cavity consists of two highly reflective mirrors that support a stable optical mode, so that injected light performs many round trips and the effective propagation distance becomes very large compared to the physical cavity length.
-Instead of measuring an absolute transmission, CRDS measures a decay constant.
+Instead of measuring an absolute transmission, CRDS measures a decay constant~\cite{RAYAnleitung, Berden2000}.
 
 In a typical CRDS measurement, the cavity is excited by a short laser pulse that is turned off rapidly compared to the subsequent decay.
 After the excitation ends, light remains trapped in the cavity mode and a small fraction is transmitted through one of the mirrors during each round trip.
-This transmitted fraction is detected as a function of time, and the measured signal follows an exponential decay.
+This transmitted fraction is detected as a function of time, and the measured signal follows an exponential decay
 \begin{equation}
 I(t)=I_0\,e^{-t/\tau},
 \label{eq:crds_decay}
 \end{equation}
 
 where $I_0$ is the intensity at the beginning of the decay and $\tau$ is the ring-down time~\cite{RAYAnleitung}.
+A useful way to interpret this exponential decay is to compare it with Beer--Lambert attenuation: there the intensity decreases exponentially with propagation distance, whereas here it decreases exponentially with time because the circulating light covers an increasing path length $z\approx ct$ as time passes.
 The ring-down time is the characteristic time scale on which the intracavity intensity drops by a factor $e$, so it quantifies the total fractional loss per unit time experienced by the stored light.
 
 \begin{figure}[H]
@@ -212,20 +209,17 @@ The ring-down time is the characteristic time scale on which the intracavity int
 To connect $\tau$ with cavity losses, consider first an evacuated cavity where losses inside the cavity volume are negligible.
 In that case the dominant loss is the finite mirror reflectivity, so the intensity is reduced by approximately the same fraction during each round trip.
 For mirror reflectivity $R(\lambda)\approx 0.9998$, one obtains the standard relation
-
 \[
 \tau_0(\lambda)=\frac{L}{c\left(1-R(\lambda)\right)},
 \]
-
 where $L$ is the cavity length and $c$ is the speed of light~\cite{RAYAnleitung}.
-The quantity $\tau_0$ therefore represents the baseline storage time of the cavity and depends on mirror losses as well as on any additional parasitic losses that effectively reduce the cavity finesse.
+The quantity $\tau_0$ therefore represents the baseline decay time of the empty cavity and is set mainly by the mirror reflectivity, while additional losses such as imperfect alignment or geometrical escape can shorten it further.
 
 If a gas is present in the cavity, photons can be removed from the cavity mode by scattering and absorption inside the cavity volume.
 Such loss processes can be described by an extinction coefficient per unit length, which for this experiment is dominated by the scattering coefficient $\beta(\lambda)$ introduced in Eq.~\eqref{eq:beta_def}.
 The additional loss shortens the ring-down time from $\tau_0$ to a smaller value $\tau$.
 A particularly useful feature of CRDS is that the mirror contribution can be eliminated by comparing measurements with and without the additional loss mechanism.
 One finds
-
 \begin{equation}
 \beta(\lambda)=\frac{1}{c}\left(\frac{1}{\tau(\lambda)}-\frac{1}{\tau_0(\lambda)}\right).
 \label{eq:beta_from_taus}
