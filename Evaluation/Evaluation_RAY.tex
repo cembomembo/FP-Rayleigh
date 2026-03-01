@@ -200,7 +200,7 @@ The ring-down time is the characteristic time scale on which the intracavity int
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.85\linewidth]{../resources/figures/crds_principle.png}
+  \includegraphics[width=0.9\linewidth]{../resources/figures/crds_principle.png}
   \caption{Principle of a CRDS measurement.
   A short laser pulse is injected into a two-mirror cavity with reflectivity $R>99.98\%$ and the transmitted intensity decays exponentially as $I(t)=I_0 e^{-t/\tau}$~\cite{RAYAnleitung}.}
   \label{fig:crds_principle}
@@ -241,7 +241,7 @@ All optical components are mounted on an optical rail that is screwed onto a sta
 \vspace{1em}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.95\linewidth]{../resources/figures/crds_setup.png}
+  \includegraphics[width=0.97\linewidth]{../resources/figures/crds_setup.png}
   \caption{CRDS measurement setup as used in the experiment.
   The pulsed laser injects light into the optical cavity, the transmitted leakage light is detected with a photomultiplier (PM) after an optical filter and recorded on a digital oscilloscope, and the cavity can be evacuated or filled with filtered ambient air using valves, a vacuum pump, and a syringe filter~\cite{RAYAnleitung}.}
   \label{fig:crds_setup}
@@ -249,7 +249,7 @@ All optical components are mounted on an optical rail that is screwed onto a sta
 
 The optical cavity consists of two highly reflective spherical mirrors arranged as a stable resonator with a fixed mirror separation L=\SI{50}{cm} and mirror radius of curvature r=\SI{100}{cm}.
 The mirrors have a reflectivity of $R>99.98\%$, so only a very small fraction of the intracavity light is transmitted through the mirror coatings during each round trip.
-A short laser pulse from the pulsed laser diode head (PicoQuant LDH-D-C-405, wavelength \SI{405}{nm}, pulse power up to \SI{100}{mW}, repetition rate up to \SI{100}{Hz}) is coupled into the cavity through the input mirror, and after the excitation ends the remaining intracavity light decays due to the total losses of the resonator~\cite{RAYAnleitung}.
+A short laser pulse from the pulsed laser diode head (PicoQuant LDH-D-C-405, wavelength \SI{405}{nm}, pulse power up to \SI{100}{mW}, repetition rate up to \SI{100}{Hz}) is injected into the cavity through the input mirror, and after the excitation ends the remaining intracavity light decays due to the total losses of the resonator~\cite{RAYAnleitung}.
 Between the laser diode head and the cavity entrance, two pinhole apertures are positioned along the beam path over a distance of roughly \SI{50}{cm}.
 These apertures define the nominal optical axis and serve as a practical alignment aid: the laser beam is adjusted to pass centrally through both pinholes before entering the cavity, which helps to ensure near-collinear injection and reduces angular misalignment during the subsequent cavity optimization.
 
@@ -575,7 +575,7 @@ This scatter is much larger than the propagated uncertainties of individual fits
 
 A key point is that $\beta$ is extracted from a difference of decay rates, $\beta=\Delta(1/\tau)/c$.
 As a consequence, small changes in the measured ring-down times $\tau$ and $\tau_0$ can lead to comparatively large changes in the inferred scattering coefficient.
-A sensitivity analysis in the evaluation illustrates this directly: for a typical pair, changing the air-filled ring-down time by only \SI{0.5}{\micro\second} changes $\beta$ by about $3.1\times 10^{-5}\,\si{m^{-1}}$, i.e.\ by an amount comparable to the expected Rayleigh signal itself.
+A simple estimate illustrates this directly: for a typical pair, changing the air-filled ring-down time by only \SI{0.5}{\micro\second} changes $\beta$ by about $3.1\times 10^{-5}\,\si{m^{-1}}$, i.e.\ by an amount comparable to the expected Rayleigh signal itself.
 This explains why the pairwise values $\beta_i$ can differ strongly even though each individual ring-down time is determined with an uncertainty of only about \SI{0.05}{\micro\second}.
 
 The most plausible origin of such pair-to-pair variations is that the optical alignment of the cavity is not reproduced perfectly after refilling and re-optimizing.
@@ -617,8 +617,8 @@ Further improvements would primarily require increased mechanical stability and 
 Additional files:
 
 \begin{itemize}
-  \item \texttt{'RAY\_Python.zip'}
-  \item \texttt{'RAY\_LabReport.pdf'}
+  \item \texttt{RAY\_Python.zip}
+  \item \texttt{RAY\_LabReport.pdf}
 \end{itemize}
 
 % ------------------
